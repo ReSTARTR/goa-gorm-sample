@@ -1,0 +1,77 @@
+consumes:
+- application/json
+- application/xml
+- application/gob
+- application/x-gob
+definitions:
+  GoaExampleCom:
+    description: A bottle of wine (default view)
+    example:
+      href: Tenetur fugiat voluptas.
+      id: 7.059489e+18
+      name: Non minus sed non voluptas laudantium.
+    properties:
+      href:
+        description: API href for making requests on the bottle
+        example: Tenetur fugiat voluptas.
+        type: string
+      id:
+        description: Unique bottle ID
+        example: 7.059489e+18
+        format: int64
+        type: integer
+      name:
+        description: Name of wine
+        example: Non minus sed non voluptas laudantium.
+        type: string
+    required:
+    - id
+    - href
+    - name
+    title: 'Mediatype identifier: application/vnd.goa.example.com+json; view=default'
+    type: object
+host: localhost:8000
+info:
+  description: A simple goa service
+  title: The virtual wine celler
+  version: ""
+paths:
+  /bottles/{bottleID}:
+    get:
+      description: Get bottle by id
+      operationId: bottle#show
+      parameters:
+      - description: Bottle ID
+        in: path
+        name: bottleID
+        required: true
+        type: integer
+      produces:
+      - application/vnd.goa.example.com+json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/GoaExampleCom'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      summary: show bottle
+      tags:
+      - bottle
+produces:
+- application/json
+- application/xml
+- application/gob
+- application/x-gob
+responses:
+  NotFound:
+    description: Not Found
+  OK:
+    description: OK
+    schema:
+      $ref: '#/definitions/GoaExampleCom'
+schemes:
+- http
+swagger: "2.0"
