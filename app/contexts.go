@@ -164,3 +164,45 @@ func (ctx *ShowUserContext) NotFound() error {
 	ctx.ResponseData.WriteHeader(404)
 	return nil
 }
+
+// UpdateUserContext provides the user update action context.
+type UpdateUserContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	UserID  int
+	Payload *UserPayload
+}
+
+// NewUpdateUserContext parses the incoming request URL and body, performs validations and creates the
+// context used by the user controller update action.
+func NewUpdateUserContext(ctx context.Context, r *http.Request, service *goa.Service) (*UpdateUserContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	req.Request = r
+	rctx := UpdateUserContext{Context: ctx, ResponseData: resp, RequestData: req}
+	paramUserID := req.Params["userID"]
+	if len(paramUserID) > 0 {
+		rawUserID := paramUserID[0]
+		if userID, err2 := strconv.Atoi(rawUserID); err2 == nil {
+			rctx.UserID = userID
+		} else {
+			err = goa.MergeErrors(err, goa.InvalidParamTypeError("userID", rawUserID, "integer"))
+		}
+	}
+	return &rctx, err
+}
+
+// OK sends a HTTP response with status code 200.
+func (ctx *UpdateUserContext) OK(r *ApplicationVndUser) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application.vnd.user+json")
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// NotFound sends a HTTP response with status code 404.
+func (ctx *UpdateUserContext) NotFound() error {
+	ctx.ResponseData.WriteHeader(404)
+	return nil
+}

@@ -120,3 +120,47 @@ func (c *Client) NewShowUserRequest(ctx context.Context, path string) (*http.Req
 	}
 	return req, nil
 }
+
+// UpdateUserPath computes a request path to the update action of user.
+func UpdateUserPath(userID int) string {
+	param0 := strconv.Itoa(userID)
+
+	return fmt.Sprintf("/users/%s", param0)
+}
+
+// Update user
+func (c *Client) UpdateUser(ctx context.Context, path string, payload *UserPayload, contentType string) (*http.Response, error) {
+	req, err := c.NewUpdateUserRequest(ctx, path, payload, contentType)
+	if err != nil {
+		return nil, err
+	}
+	return c.Client.Do(ctx, req)
+}
+
+// NewUpdateUserRequest create the request corresponding to the update action endpoint of the user resource.
+func (c *Client) NewUpdateUserRequest(ctx context.Context, path string, payload *UserPayload, contentType string) (*http.Request, error) {
+	var body bytes.Buffer
+	if contentType == "" {
+		contentType = "*/*" // Use default encoder
+	}
+	err := c.Encoder.Encode(payload, &body, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to encode body: %s", err)
+	}
+	scheme := c.Scheme
+	if scheme == "" {
+		scheme = "http"
+	}
+	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
+	req, err := http.NewRequest("PUT", u.String(), &body)
+	if err != nil {
+		return nil, err
+	}
+	header := req.Header
+	if contentType == "*/*" {
+		header.Set("Content-Type", "application/json")
+	} else {
+		header.Set("Content-Type", contentType)
+	}
+	return req, nil
+}

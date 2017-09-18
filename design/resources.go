@@ -50,6 +50,16 @@ var _ = Resource("user", func() {
 		Response(OK)
 		Response(NotFound)
 	})
+	Action("update", func() {
+		Description("Update user")
+		Routing(PUT("/:userID"))
+		Params(func() {
+			Param("userID", Integer, "User ID")
+		})
+		Payload(UserPayload)
+		Response(OK)
+		Response(NotFound)
+	})
 })
 
 var _ = Resource("swagger", func() {

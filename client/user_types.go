@@ -13,7 +13,6 @@ package client
 // userPayload user type.
 type userPayload struct {
 	Description *string `form:"description,omitempty" json:"description,omitempty" xml:"description,omitempty"`
-	ID          *int    `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
 	Title       *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
 }
 
@@ -22,9 +21,6 @@ func (ut *userPayload) Publicize() *UserPayload {
 	var pub UserPayload
 	if ut.Description != nil {
 		pub.Description = ut.Description
-	}
-	if ut.ID != nil {
-		pub.ID = ut.ID
 	}
 	if ut.Title != nil {
 		pub.Title = ut.Title
@@ -35,6 +31,5 @@ func (ut *userPayload) Publicize() *UserPayload {
 // UserPayload user type.
 type UserPayload struct {
 	Description *string `form:"description,omitempty" json:"description,omitempty" xml:"description,omitempty"`
-	ID          *int    `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
 	Title       *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
 }

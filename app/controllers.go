@@ -154,6 +154,7 @@ type UserController interface {
 	Create(*CreateUserContext) error
 	Index(*IndexUserContext) error
 	Show(*ShowUserContext) error
+	Update(*UpdateUserContext) error
 }
 
 // MountUserController "mounts" a User resource controller on the given service.
@@ -216,6 +217,28 @@ func MountUserController(service *goa.Service, ctrl UserController) {
 	h = handleUserOrigin(h)
 	service.Mux.Handle("GET", "/users/:userID", ctrl.MuxHandler("show", h, nil))
 	service.LogInfo("mount", "ctrl", "User", "action", "Show", "route", "GET /users/:userID")
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewUpdateUserContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		// Build the payload
+		if rawPayload := goa.ContextRequest(ctx).Payload; rawPayload != nil {
+			rctx.Payload = rawPayload.(*UserPayload)
+		} else {
+			return goa.MissingPayloadError()
+		}
+		return ctrl.Update(rctx)
+	}
+	h = handleUserOrigin(h)
+	service.Mux.Handle("PUT", "/users/:userID", ctrl.MuxHandler("update", h, unmarshalUpdateUserPayload))
+	service.LogInfo("mount", "ctrl", "User", "action", "Update", "route", "PUT /users/:userID")
 }
 
 // handleUserOrigin applies the CORS response headers corresponding to the origin.
@@ -244,6 +267,16 @@ func handleUserOrigin(h goa.Handler) goa.Handler {
 
 // unmarshalCreateUserPayload unmarshals the request body into the context request data Payload field.
 func unmarshalCreateUserPayload(ctx context.Context, service *goa.Service, req *http.Request) error {
+	payload := &userPayload{}
+	if err := service.DecodeRequest(req, payload); err != nil {
+		return err
+	}
+	goa.ContextRequest(ctx).Payload = payload.Publicize()
+	return nil
+}
+
+// unmarshalUpdateUserPayload unmarshals the request body into the context request data Payload field.
+func unmarshalUpdateUserPayload(ctx context.Context, service *goa.Service, req *http.Request) error {
 	payload := &userPayload{}
 	if err := service.DecodeRequest(req, payload); err != nil {
 		return err

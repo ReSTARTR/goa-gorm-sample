@@ -36,6 +36,9 @@ definitions:
     - description: Voluptas ratione voluptates non minus.
       id: 8.1325685e+18
       title: Voluptas laudantium sint quisquam voluptatibus labore.
+    - description: Voluptas ratione voluptates non minus.
+      id: 8.1325685e+18
+      title: Voluptas laudantium sint quisquam voluptatibus labore.
     items:
       $ref: '#/definitions/ApplicationVndUser'
     title: 'Mediatype identifier: application.vnd.user+json; type=collection; view=default'
@@ -69,18 +72,13 @@ definitions:
   UserPayload:
     example:
       description: Aperiam eius quibusdam dolores beatae vel.
-      id: 8.576535e+18
-      title: Aperiam est praesentium cum doloribus temporibus.
+      title: Ex aperiam est praesentium cum.
     properties:
       description:
         example: Aperiam eius quibusdam dolores beatae vel.
         type: string
-      id:
-        example: 8.576535e+18
-        format: int64
-        type: integer
       title:
-        example: Aperiam est praesentium cum doloribus temporibus.
+        example: Ex aperiam est praesentium cum.
         type: string
     title: UserPayload
     type: object
@@ -246,6 +244,34 @@ paths:
       schemes:
       - http
       summary: show user
+      tags:
+      - user
+    put:
+      description: Update user
+      operationId: user#update
+      parameters:
+      - description: User ID
+        in: path
+        name: userID
+        required: true
+        type: integer
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/UserPayload'
+      produces:
+      - application.vnd.user+json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ApplicationVndUser'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      summary: update user
       tags:
       - user
 produces:

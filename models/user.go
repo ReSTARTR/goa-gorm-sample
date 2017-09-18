@@ -152,9 +152,6 @@ func UserFromUserPayload(payload *app.UserPayload) *User {
 	if payload.Description != nil {
 		user.Description = *payload.Description
 	}
-	if payload.ID != nil {
-		user.ID = *payload.ID
-	}
 	if payload.Title != nil {
 		user.Title = *payload.Title
 	}
@@ -174,9 +171,6 @@ func (m *UserDB) UpdateFromUserPayload(ctx context.Context, payload *app.UserPay
 	}
 	if payload.Description != nil {
 		obj.Description = *payload.Description
-	}
-	if payload.ID != nil {
-		obj.ID = *payload.ID
 	}
 	if payload.Title != nil {
 		obj.Title = *payload.Title

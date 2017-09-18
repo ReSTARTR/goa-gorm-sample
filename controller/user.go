@@ -69,3 +69,14 @@ func (c *UserController) Show(ctx *app.ShowUserContext) error {
 	res = user
 	return ctx.OK(res)
 }
+
+// Update runs the update action.
+func (c *UserController) Update(ctx *app.UpdateUserContext) error {
+	// UserController_Update: start_implement
+
+	// Put your logic here
+
+	// UserController_Update: end_implement
+	res := &app.ApplicationVndUser{}
+	return ctx.OK(res)
+}
