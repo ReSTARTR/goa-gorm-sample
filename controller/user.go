@@ -2,23 +2,19 @@ package controller
 
 import (
 	"github.com/ReSTARTR/goa-gorm-sample/app"
+	"github.com/ReSTARTR/goa-gorm-sample/db"
 	"github.com/ReSTARTR/goa-gorm-sample/models"
 	"github.com/goadesign/goa"
-    "github.com/jinzhu/gorm"
 )
 
 // UserController implements the user resource.
 type UserController struct {
 	*goa.Controller
-	db *gorm.DB
 }
 
 // NewUserController creates a user controller.
-func NewUserController(service *goa.Service, db *gorm.DB) *UserController {
-	return &UserController{
-		Controller: service.NewController("UserController"),
-		db: db,
-	}
+func NewUserController(service *goa.Service) *UserController {
+	return &UserController{Controller: service.NewController("UserController")}
 }
 
 // Create runs the create action.
@@ -26,7 +22,7 @@ func (c *UserController) Create(ctx *app.CreateUserContext) error {
 	// UserController_Create: start_implement
 
 	// Put your logic here
-	udb := models.NewUserDB(c.db)
+	udb := models.NewUserDB(db.DB)
 	u := models.UserFromUserPayload(ctx.Payload)
 	if err := udb.Add(ctx, u); err != nil {
 		return err
@@ -42,7 +38,7 @@ func (c *UserController) Index(ctx *app.IndexUserContext) error {
 	// UserController_Index: start_implement
 
 	// Put your logic here
-	udb := models.NewUserDB(c.db)
+	udb := models.NewUserDB(db.DB)
 	users := udb.ListApplicationVndUser(ctx)
 
 	// UserController_Index: end_implement
@@ -56,7 +52,7 @@ func (c *UserController) Show(ctx *app.ShowUserContext) error {
 	// UserController_Show: start_implement
 
 	// Put your logic here
-	udb := models.NewUserDB(c.db)
+	udb := models.NewUserDB(db.DB)
 	var user *app.ApplicationVndUser
 	var err error
 	user, err = udb.OneApplicationVndUser(ctx, ctx.UserID)
@@ -75,7 +71,7 @@ func (c *UserController) Update(ctx *app.UpdateUserContext) error {
 	// UserController_Update: start_implement
 
 	// Put your logic here
-	udb := models.NewUserDB(c.db)
+	udb := models.NewUserDB(db.DB)
 	if err := udb.UpdateFromUserPayload(ctx, ctx.Payload, ctx.UserID); err != nil {
 		return nil
 	}

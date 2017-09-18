@@ -10,13 +10,14 @@ import (
 	"github.com/qor/admin"
 	"github.com/qor/qor"
 
+	"github.com/ReSTARTR/goa-gorm-sample/db"
 	"github.com/ReSTARTR/goa-gorm-sample/app"
 	"github.com/ReSTARTR/goa-gorm-sample/controller"
 	"github.com/ReSTARTR/goa-gorm-sample/models"
 )
 
 func main() {
-	db.AutoMigrate(&models.User{})
+	db.DB.AutoMigrate(&models.User{})
 
 	// Create service
 	service := goa.New("celler")
@@ -31,7 +32,7 @@ func main() {
 	bc := controller.NewBottleController(service)
 	app.MountBottleController(service, bc)
 	// Mount "user" controller
-	uc := controller.NewUserController(service, db)
+	uc := controller.NewUserController(service)
 	app.MountUserController(service, uc)
 	// Mount "swagger" controller
 	sc := controller.NewSwaggerController(service)
@@ -39,7 +40,7 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.Handle("/", service.Mux)
-	Admin := admin.New(&qor.Config{DB: db})
+	Admin := admin.New(&qor.Config{DB: db.DB})
 	Admin.AddResource(&models.User{})
 	Admin.MountTo("/admin", mux)
 
