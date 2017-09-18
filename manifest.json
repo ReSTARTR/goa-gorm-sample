@@ -1,0 +1,22 @@
+{
+    "dependencies": {
+        "github.com/go-sql-driver/mysql": {
+            "branch": "master"
+        },
+        "github.com/goadesign/goa": {
+            "version": "1.3"
+        },
+        "github.com/goadesign/gorma": {
+            "branch": "master"
+        },
+        "github.com/jinzhu/gorm": {
+            "version": "1.0"
+        },
+        "github.com/qor/admin": {
+            "version": "1.0"
+        },
+        "github.com/qor/qor": {
+            "version": "1.0"
+        }
+    }
+}

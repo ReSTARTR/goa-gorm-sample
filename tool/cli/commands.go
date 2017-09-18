@@ -35,6 +35,13 @@ type (
 		PrettyPrint bool
 	}
 
+	// ShowUserCommand is the command line data structure for the show action of user
+	ShowUserCommand struct {
+		// User ID
+		UserID      int
+		PrettyPrint bool
+	}
+
 	// DownloadCommand is the command line data structure for the download command.
 	DownloadCommand struct {
 		// OutFile is the path to the download output file.
@@ -47,7 +54,7 @@ func RegisterCommands(app *cobra.Command, c *client.Client) {
 	var command, sub *cobra.Command
 	command = &cobra.Command{
 		Use:   "show",
-		Short: `Get bottle by id`,
+		Short: `show action`,
 	}
 	tmp1 := new(ShowBottleCommand)
 	sub = &cobra.Command{
@@ -57,6 +64,15 @@ func RegisterCommands(app *cobra.Command, c *client.Client) {
 	}
 	tmp1.RegisterFlags(sub, c)
 	sub.PersistentFlags().BoolVar(&tmp1.PrettyPrint, "pp", false, "Pretty print response body")
+	command.AddCommand(sub)
+	tmp2 := new(ShowUserCommand)
+	sub = &cobra.Command{
+		Use:   `user ["/users/USERID"]`,
+		Short: ``,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp2.Run(c, args) },
+	}
+	tmp2.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp2.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 
@@ -296,4 +312,30 @@ func (cmd *ShowBottleCommand) Run(c *client.Client, args []string) error {
 func (cmd *ShowBottleCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
 	var bottleID int
 	cc.Flags().IntVar(&cmd.BottleID, "bottleID", bottleID, `Bottle ID`)
+}
+
+// Run makes the HTTP request corresponding to the ShowUserCommand command.
+func (cmd *ShowUserCommand) Run(c *client.Client, args []string) error {
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	} else {
+		path = fmt.Sprintf("/users/%v", cmd.UserID)
+	}
+	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+	ctx := goa.WithLogger(context.Background(), logger)
+	resp, err := c.ShowUser(ctx, path)
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	goaclient.HandleResponse(c.Client, resp, cmd.PrettyPrint)
+	return nil
+}
+
+// RegisterFlags registers the command flags with the command line.
+func (cmd *ShowUserCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+	var userID int
+	cc.Flags().IntVar(&cmd.UserID, "userID", userID, `User ID`)
 }

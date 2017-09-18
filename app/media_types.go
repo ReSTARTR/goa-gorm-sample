@@ -14,6 +14,16 @@ import (
 	"github.com/goadesign/goa"
 )
 
+// user media type (default view)
+//
+// Identifier: application.vnd.user+json; view=default
+type ApplicationVndUser struct {
+	// description
+	Description *string `form:"description,omitempty" json:"description,omitempty" xml:"description,omitempty"`
+	// title
+	Title *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
+}
+
 // A bottle of wine (default view)
 //
 // Identifier: application/vnd.goa.example.com+json; view=default

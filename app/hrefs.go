@@ -20,3 +20,9 @@ func BottleHref(bottleID interface{}) string {
 	parambottleID := strings.TrimLeftFunc(fmt.Sprintf("%v", bottleID), func(r rune) bool { return r == '/' })
 	return fmt.Sprintf("/bottles/%v", parambottleID)
 }
+
+// UserHref returns the resource href.
+func UserHref(userID interface{}) string {
+	paramuserID := strings.TrimLeftFunc(fmt.Sprintf("%v", userID), func(r rune) bool { return r == '/' })
+	return fmt.Sprintf("/users/%v", paramuserID)
+}

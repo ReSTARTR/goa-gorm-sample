@@ -1,4 +1,4 @@
-package main
+package controller
 
 import (
 	"github.com/ReSTARTR/goa-sample/app"

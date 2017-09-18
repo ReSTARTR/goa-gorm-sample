@@ -3,12 +3,20 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/ReSTARTR/goa-sample/app"
+	"github.com/ReSTARTR/goa-sample/controller"
+	"github.com/ReSTARTR/goa-sample/models"
 	"github.com/goadesign/goa"
 	"github.com/goadesign/goa/middleware"
+	"github.com/qor/admin"
+	"github.com/qor/qor"
 )
 
 func main() {
+	db.AutoMigrate(&models.User{})
+
 	// Create service
 	service := goa.New("celler")
 
@@ -19,14 +27,23 @@ func main() {
 	service.Use(middleware.Recover())
 
 	// Mount "bottle" controller
-	bc := NewBottleController(service)
+	bc := controller.NewBottleController(service)
 	app.MountBottleController(service, bc)
-	sc := NewSwaggerController(service)
+	// Mount "user" controller
+	uc := controller.NewUserController(service, db)
+	app.MountUserController(service, uc)
+	// Mount "swagger" controller
+	sc := controller.NewSwaggerController(service)
 	app.MountSwaggerController(service, sc)
 
+	mux := http.NewServeMux()
+	mux.Handle("/", service.Mux)
+	Admin := admin.New(&qor.Config{DB: db})
+	Admin.AddResource(&models.User{})
+	Admin.MountTo("/admin", mux)
+
 	// Start service
-	if err := service.ListenAndServe(":8000"); err != nil {
+	if err := http.ListenAndServe(":8000", mux); err != nil {
 		service.LogError("startup", "err", err)
 	}
-
 }

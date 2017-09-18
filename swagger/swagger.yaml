@@ -4,25 +4,41 @@ consumes:
 - application/gob
 - application/x-gob
 definitions:
+  ApplicationVndUser:
+    description: user media type (default view)
+    example:
+      description: Tenetur fugiat voluptas.
+      title: Voluptates non.
+    properties:
+      description:
+        description: description
+        example: Tenetur fugiat voluptas.
+        type: string
+      title:
+        description: title
+        example: Voluptates non.
+        type: string
+    title: 'Mediatype identifier: application.vnd.user+json; view=default'
+    type: object
   GoaExampleCom:
     description: A bottle of wine (default view)
     example:
-      href: Tenetur fugiat voluptas.
-      id: 7.059489e+18
-      name: Non minus sed non voluptas laudantium.
+      href: Sed non voluptas laudantium.
+      id: 8.250218e+18
+      name: Voluptatibus labore qui omnis velit reprehenderit qui.
     properties:
       href:
         description: API href for making requests on the bottle
-        example: Tenetur fugiat voluptas.
+        example: Sed non voluptas laudantium.
         type: string
       id:
         description: Unique bottle ID
-        example: 7.059489e+18
+        example: 8.250218e+18
         format: int64
         type: integer
       name:
         description: Name of wine
-        example: Non minus sed non voluptas laudantium.
+        example: Voluptatibus labore qui omnis velit reprehenderit qui.
         type: string
     required:
     - id
@@ -129,6 +145,30 @@ paths:
       schemes:
       - http
       summary: Download swaggerui/dist
+  /users/{userID}:
+    get:
+      description: Get user by id
+      operationId: user#show
+      parameters:
+      - description: User ID
+        in: path
+        name: userID
+        required: true
+        type: integer
+      produces:
+      - application.vnd.user+json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ApplicationVndUser'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      summary: show user
+      tags:
+      - user
 produces:
 - application/json
 - application/xml
