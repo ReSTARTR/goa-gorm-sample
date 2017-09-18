@@ -7,44 +7,82 @@ definitions:
   ApplicationVndUser:
     description: user media type (default view)
     example:
-      description: Tenetur fugiat voluptas.
-      title: Voluptates non.
+      description: Voluptas ratione voluptates non minus.
+      id: 8.1325685e+18
+      title: Voluptas laudantium sint quisquam voluptatibus labore.
     properties:
       description:
         description: description
-        example: Tenetur fugiat voluptas.
+        example: Voluptas ratione voluptates non minus.
         type: string
+      id:
+        description: id
+        example: 8.1325685e+18
+        format: int64
+        type: integer
       title:
         description: title
-        example: Voluptates non.
+        example: Voluptas laudantium sint quisquam voluptatibus labore.
         type: string
     title: 'Mediatype identifier: application.vnd.user+json; view=default'
     type: object
+  ApplicationVndUserCollection:
+    description: ApplicationVndUserCollection is the media type for an array of ApplicationVndUser
+      (default view)
+    example:
+    - description: Voluptas ratione voluptates non minus.
+      id: 8.1325685e+18
+      title: Voluptas laudantium sint quisquam voluptatibus labore.
+    - description: Voluptas ratione voluptates non minus.
+      id: 8.1325685e+18
+      title: Voluptas laudantium sint quisquam voluptatibus labore.
+    items:
+      $ref: '#/definitions/ApplicationVndUser'
+    title: 'Mediatype identifier: application.vnd.user+json; type=collection; view=default'
+    type: array
   GoaExampleCom:
     description: A bottle of wine (default view)
     example:
-      href: Sed non voluptas laudantium.
-      id: 8.250218e+18
-      name: Voluptatibus labore qui omnis velit reprehenderit qui.
+      href: Reprehenderit qui est dicta distinctio voluptates.
+      id: 6.507623e+18
+      name: Odio aut.
     properties:
       href:
         description: API href for making requests on the bottle
-        example: Sed non voluptas laudantium.
+        example: Reprehenderit qui est dicta distinctio voluptates.
         type: string
       id:
         description: Unique bottle ID
-        example: 8.250218e+18
+        example: 6.507623e+18
         format: int64
         type: integer
       name:
         description: Name of wine
-        example: Voluptatibus labore qui omnis velit reprehenderit qui.
+        example: Odio aut.
         type: string
     required:
     - id
     - href
     - name
     title: 'Mediatype identifier: application/vnd.goa.example.com+json; view=default'
+    type: object
+  UserPayload:
+    example:
+      description: Aperiam eius quibusdam dolores beatae vel.
+      id: 8.576535e+18
+      title: Aperiam est praesentium cum doloribus temporibus.
+    properties:
+      description:
+        example: Aperiam eius quibusdam dolores beatae vel.
+        type: string
+      id:
+        example: 8.576535e+18
+        format: int64
+        type: integer
+      title:
+        example: Aperiam est praesentium cum doloribus temporibus.
+        type: string
+    title: UserPayload
     type: object
   error:
     description: Error response media type (default view)
@@ -145,6 +183,47 @@ paths:
       schemes:
       - http
       summary: Download swaggerui/dist
+  /users/:
+    get:
+      description: List users
+      operationId: user#index
+      produces:
+      - application.vnd.user+json; type=collection
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ApplicationVndUserCollection'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      summary: index user
+      tags:
+      - user
+    post:
+      description: Create user
+      operationId: user#create
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/UserPayload'
+      produces:
+      - application.vnd.user+json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ApplicationVndUser'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      summary: create user
+      tags:
+      - user
   /users/{userID}:
     get:
       description: Get user by id

@@ -44,6 +44,7 @@ func (m *UserDB) ListApplicationVndUser(ctx context.Context) []*app.ApplicationV
 func (m *User) UserToApplicationVndUser() *app.ApplicationVndUser {
 	user := &app.ApplicationVndUser{}
 	user.Description = &m.Description
+	user.ID = &m.ID
 	user.Title = &m.Title
 
 	return user

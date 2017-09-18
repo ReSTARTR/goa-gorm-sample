@@ -13,7 +13,7 @@ var _ = StorageGroup("GoaSampleStorageGroup", func() {
 		// User
 		Model("User", func() {
 			BuildsFrom(func() {
-				// Payload("user", "create")
+				Payload("user", "create")
 				// Payload("user", "update")
 			})
 			RendersTo(User)

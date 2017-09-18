@@ -58,6 +58,72 @@ func (ctx *ShowBottleContext) NotFound() error {
 	return nil
 }
 
+// CreateUserContext provides the user create action context.
+type CreateUserContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	Payload *UserPayload
+}
+
+// NewCreateUserContext parses the incoming request URL and body, performs validations and creates the
+// context used by the user controller create action.
+func NewCreateUserContext(ctx context.Context, r *http.Request, service *goa.Service) (*CreateUserContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	req.Request = r
+	rctx := CreateUserContext{Context: ctx, ResponseData: resp, RequestData: req}
+	return &rctx, err
+}
+
+// OK sends a HTTP response with status code 200.
+func (ctx *CreateUserContext) OK(r *ApplicationVndUser) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application.vnd.user+json")
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// NotFound sends a HTTP response with status code 404.
+func (ctx *CreateUserContext) NotFound() error {
+	ctx.ResponseData.WriteHeader(404)
+	return nil
+}
+
+// IndexUserContext provides the user index action context.
+type IndexUserContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+}
+
+// NewIndexUserContext parses the incoming request URL and body, performs validations and creates the
+// context used by the user controller index action.
+func NewIndexUserContext(ctx context.Context, r *http.Request, service *goa.Service) (*IndexUserContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	req.Request = r
+	rctx := IndexUserContext{Context: ctx, ResponseData: resp, RequestData: req}
+	return &rctx, err
+}
+
+// OK sends a HTTP response with status code 200.
+func (ctx *IndexUserContext) OK(r ApplicationVndUserCollection) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application.vnd.user+json; type=collection")
+	if r == nil {
+		r = ApplicationVndUserCollection{}
+	}
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// NotFound sends a HTTP response with status code 404.
+func (ctx *IndexUserContext) NotFound() error {
+	ctx.ResponseData.WriteHeader(404)
+	return nil
+}
+
 // ShowUserContext provides the user show action context.
 type ShowUserContext struct {
 	context.Context

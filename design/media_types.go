@@ -9,10 +9,15 @@ import (
 var User = MediaType("application.vnd.user+json", func() {
 	Description("user media type")
 	Attributes(func() {
+		Attribute("id", Integer, "id")
 		Attribute("title", String, "title")
 		Attribute("description", String, "description")
+		Attribute("created_at", DateTime, "created_at")
+		Attribute("updated_at", DateTime, "updated_at")
+		Attribute("deleted_at", DateTime, "delted_at")
 	})
 	View("default", func() {
+		Attribute("id")
 		Attribute("title")
 		Attribute("description")
 	})

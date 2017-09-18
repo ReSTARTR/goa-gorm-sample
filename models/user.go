@@ -62,6 +62,8 @@ type UserStorage interface {
 
 	ListApplicationVndUser(ctx context.Context) []*app.ApplicationVndUser
 	OneApplicationVndUser(ctx context.Context, id int) (*app.ApplicationVndUser, error)
+
+	UpdateFromUserPayload(ctx context.Context, payload *app.UserPayload, id int) error
 }
 
 // TableName overrides the table name settings in Gorm to force a specific table name
@@ -141,4 +143,45 @@ func (m *UserDB) Delete(ctx context.Context, id int) error {
 	}
 
 	return nil
+}
+
+// UserFromUserPayload Converts source UserPayload to target User model
+// only copying the non-nil fields from the source.
+func UserFromUserPayload(payload *app.UserPayload) *User {
+	user := &User{}
+	if payload.Description != nil {
+		user.Description = *payload.Description
+	}
+	if payload.ID != nil {
+		user.ID = *payload.ID
+	}
+	if payload.Title != nil {
+		user.Title = *payload.Title
+	}
+
+	return user
+}
+
+// UpdateFromUserPayload applies non-nil changes from UserPayload to the model and saves it
+func (m *UserDB) UpdateFromUserPayload(ctx context.Context, payload *app.UserPayload, id int) error {
+	defer goa.MeasureSince([]string{"goa", "db", "user", "updatefromuserPayload"}, time.Now())
+
+	var obj User
+	err := m.Db.Table(m.TableName()).Where("id = ?", id).Find(&obj).Error
+	if err != nil {
+		goa.LogError(ctx, "error retrieving User", "error", err.Error())
+		return err
+	}
+	if payload.Description != nil {
+		obj.Description = *payload.Description
+	}
+	if payload.ID != nil {
+		obj.ID = *payload.ID
+	}
+	if payload.Title != nil {
+		obj.Title = *payload.Title
+	}
+
+	err = m.Db.Save(&obj).Error
+	return err
 }

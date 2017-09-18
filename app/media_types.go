@@ -4,8 +4,8 @@
 //
 // Command:
 // $ goagen
-// --design=github.com/ReSTARTR/goa-sample/design
-// --out=$(GOPATH)/src/github.com/ReSTARTR/goa-sample
+// --design=github.com/ReSTARTR/goa-gorm-sample/design
+// --out=$(GOPATH)/src/github.com/ReSTARTR/goa-gorm-sample
 // --version=v1.3.0
 
 package app
@@ -20,9 +20,16 @@ import (
 type ApplicationVndUser struct {
 	// description
 	Description *string `form:"description,omitempty" json:"description,omitempty" xml:"description,omitempty"`
+	// id
+	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
 	// title
 	Title *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
 }
+
+// ApplicationVndUserCollection is the media type for an array of ApplicationVndUser (default view)
+//
+// Identifier: application.vnd.user+json; type=collection; view=default
+type ApplicationVndUserCollection []*ApplicationVndUser
 
 // A bottle of wine (default view)
 //

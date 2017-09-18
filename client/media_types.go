@@ -4,8 +4,8 @@
 //
 // Command:
 // $ goagen
-// --design=github.com/ReSTARTR/goa-sample/design
-// --out=$(GOPATH)/src/github.com/ReSTARTR/goa-sample
+// --design=github.com/ReSTARTR/goa-gorm-sample/design
+// --out=$(GOPATH)/src/github.com/ReSTARTR/goa-gorm-sample
 // --version=v1.3.0
 
 package client
@@ -21,6 +21,8 @@ import (
 type ApplicationVndUser struct {
 	// description
 	Description *string `form:"description,omitempty" json:"description,omitempty" xml:"description,omitempty"`
+	// id
+	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
 	// title
 	Title *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
 }
@@ -30,6 +32,18 @@ func (c *Client) DecodeApplicationVndUser(resp *http.Response) (*ApplicationVndU
 	var decoded ApplicationVndUser
 	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
 	return &decoded, err
+}
+
+// ApplicationVndUserCollection is the media type for an array of ApplicationVndUser (default view)
+//
+// Identifier: application.vnd.user+json; type=collection; view=default
+type ApplicationVndUserCollection []*ApplicationVndUser
+
+// DecodeApplicationVndUserCollection decodes the ApplicationVndUserCollection instance encoded in resp body.
+func (c *Client) DecodeApplicationVndUserCollection(resp *http.Response) (ApplicationVndUserCollection, error) {
+	var decoded ApplicationVndUserCollection
+	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
+	return decoded, err
 }
 
 // A bottle of wine (default view)

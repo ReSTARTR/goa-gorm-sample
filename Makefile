@@ -15,7 +15,7 @@ controller:
 	$(GOAGEN) $(APPPKG) controller \
 		--pkg controller \
 		--out controller \
-		--force
+		--regen
 
 swagger:
 	$(GOAGEN) swagger
