@@ -23,7 +23,7 @@ $ make swagger-ui
 Modify db configuration
 ----
 
-edit db.go
+edit db/db.go
 
 
 Start server
