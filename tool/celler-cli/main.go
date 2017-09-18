@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/ReSTARTR/goa-sample/client"
-	"github.com/ReSTARTR/goa-sample/tool/cli"
+	"github.com/ReSTARTR/goa-gorm-sample/client"
+	"github.com/ReSTARTR/goa-gorm-sample/tool/cli"
 	goaclient "github.com/goadesign/goa/client"
 	"github.com/spf13/cobra"
 	"net/http"

@@ -4,15 +4,15 @@
 //
 // Command:
 // $ goagen
-// --design=github.com/ReSTARTR/goa-sample/design
-// --out=$(GOPATH)/src/github.com/ReSTARTR/goa-sample
+// --design=github.com/ReSTARTR/goa-gorm-sample/design
+// --out=$(GOPATH)/src/github.com/ReSTARTR/goa-gorm-sample
 // --version=v1.3.0
 
 package models
 
 import (
 	"context"
-	"github.com/ReSTARTR/goa-sample/app"
+	"github.com/ReSTARTR/goa-gorm-sample/app"
 	"github.com/goadesign/goa"
 	"github.com/jinzhu/gorm"
 	"time"

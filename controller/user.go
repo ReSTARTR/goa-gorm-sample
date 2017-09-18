@@ -4,8 +4,8 @@ import (
 	"github.com/goadesign/goa"
 	"github.com/jinzhu/gorm"
 
-	"github.com/ReSTARTR/goa-sample/app"
-	"github.com/ReSTARTR/goa-sample/models"
+	"github.com/ReSTARTR/goa-gorm-sample/app"
+	"github.com/ReSTARTR/goa-gorm-sample/models"
 )
 
 // UserController implements the user resource.

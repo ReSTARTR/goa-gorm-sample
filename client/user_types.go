@@ -4,8 +4,8 @@
 //
 // Command:
 // $ goagen
-// --design=github.com/ReSTARTR/goa-sample/design
-// --out=$(GOPATH)/src/github.com/ReSTARTR/goa-sample
+// --design=github.com/ReSTARTR/goa-gorm-sample/design
+// --out=$(GOPATH)/src/github.com/ReSTARTR/goa-gorm-sample
 // --version=v1.3.0
 
 package client

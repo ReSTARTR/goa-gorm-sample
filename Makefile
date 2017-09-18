@@ -1,5 +1,5 @@
 GOA=github.com/goadesign
-REPOS=github.com/ReSTARTR/goa-sample
+REPOS=github.com/ReSTARTR/goa-gorm-sample
 GOAGEN=goagen --design $(REPOS)/design
 APPPKG=--app-pkg $(REPOS)/app
 

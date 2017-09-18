@@ -5,13 +5,14 @@ package main
 import (
 	"net/http"
 
-	"github.com/ReSTARTR/goa-sample/app"
-	"github.com/ReSTARTR/goa-sample/controller"
-	"github.com/ReSTARTR/goa-sample/models"
 	"github.com/goadesign/goa"
 	"github.com/goadesign/goa/middleware"
 	"github.com/qor/admin"
 	"github.com/qor/qor"
+
+	"github.com/ReSTARTR/goa-gorm-sample/app"
+	"github.com/ReSTARTR/goa-gorm-sample/controller"
+	"github.com/ReSTARTR/goa-gorm-sample/models"
 )
 
 func main() {

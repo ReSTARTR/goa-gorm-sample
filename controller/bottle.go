@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/ReSTARTR/goa-sample/app"
+	"github.com/ReSTARTR/goa-gorm-sample/app"
 	"github.com/goadesign/goa"
 )
 

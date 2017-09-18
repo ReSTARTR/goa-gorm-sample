@@ -4,8 +4,8 @@
 //
 // Command:
 // $ goagen
-// --design=github.com/ReSTARTR/goa-sample/design
-// --out=$(GOPATH)/src/github.com/ReSTARTR/goa-sample
+// --design=github.com/ReSTARTR/goa-gorm-sample/design
+// --out=$(GOPATH)/src/github.com/ReSTARTR/goa-gorm-sample
 // --version=v1.3.0
 
 package cli
@@ -14,7 +14,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/ReSTARTR/goa-sample/client"
+	"github.com/ReSTARTR/goa-gorm-sample/client"
 	"github.com/goadesign/goa"
 	goaclient "github.com/goadesign/goa/client"
 	uuid "github.com/goadesign/goa/uuid"
