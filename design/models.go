@@ -5,9 +5,9 @@ import (
 	. "github.com/goadesign/gorma/dsl"
 )
 
-var _ = StorageGroup("GoaSampleStorageGroup", func() {
-	Description("This is the global storage group")
-	Store("mysql", gorma.MySQL, func() {
+// Sg is StorageGropup of GoaSample
+var Sg = StorageGroup("GoaSampleStorageGroup", func() {
+	models := func() {
 		Description("This is the Postgres relational store")
 
 		// User
@@ -25,5 +25,8 @@ var _ = StorageGroup("GoaSampleStorageGroup", func() {
 			Field("title", gorma.String, func() {})
 			Field("description", gorma.String, func() {})
 		})
-	})
+	}
+
+	Description("This is the global storage group")
+	Store("mysql", gorma.MySQL, models)
 })
