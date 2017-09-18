@@ -75,6 +75,10 @@ func (c *UserController) Update(ctx *app.UpdateUserContext) error {
 	// UserController_Update: start_implement
 
 	// Put your logic here
+	udb := models.NewUserDB(c.db)
+	if err := udb.UpdateFromUserPayload(ctx, ctx.Payload, ctx.UserID); err != nil {
+		return nil
+	}
 
 	// UserController_Update: end_implement
 	res := &app.ApplicationVndUser{}

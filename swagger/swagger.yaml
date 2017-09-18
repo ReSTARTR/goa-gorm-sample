@@ -246,7 +246,7 @@ paths:
       summary: show user
       tags:
       - user
-    put:
+    patch:
       description: Update user
       operationId: user#update
       parameters:

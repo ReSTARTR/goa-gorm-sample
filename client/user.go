@@ -152,7 +152,7 @@ func (c *Client) NewUpdateUserRequest(ctx context.Context, path string, payload 
 		scheme = "http"
 	}
 	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
-	req, err := http.NewRequest("PUT", u.String(), &body)
+	req, err := http.NewRequest("PATCH", u.String(), &body)
 	if err != nil {
 		return nil, err
 	}

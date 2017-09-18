@@ -415,7 +415,7 @@ func UpdateUserNotFound(t goatest.TInterface, ctx context.Context, service *goa.
 	u := &url.URL{
 		Path: fmt.Sprintf("/users/%v", userID),
 	}
-	req, err := http.NewRequest("PUT", u.String(), nil)
+	req, err := http.NewRequest("PATCH", u.String(), nil)
 	if err != nil {
 		panic("invalid test " + err.Error()) // bug
 	}
@@ -473,7 +473,7 @@ func UpdateUserOK(t goatest.TInterface, ctx context.Context, service *goa.Servic
 	u := &url.URL{
 		Path: fmt.Sprintf("/users/%v", userID),
 	}
-	req, err := http.NewRequest("PUT", u.String(), nil)
+	req, err := http.NewRequest("PATCH", u.String(), nil)
 	if err != nil {
 		panic("invalid test " + err.Error()) // bug
 	}

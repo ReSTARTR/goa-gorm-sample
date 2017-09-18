@@ -237,8 +237,8 @@ func MountUserController(service *goa.Service, ctrl UserController) {
 		return ctrl.Update(rctx)
 	}
 	h = handleUserOrigin(h)
-	service.Mux.Handle("PUT", "/users/:userID", ctrl.MuxHandler("update", h, unmarshalUpdateUserPayload))
-	service.LogInfo("mount", "ctrl", "User", "action", "Update", "route", "PUT /users/:userID")
+	service.Mux.Handle("PATCH", "/users/:userID", ctrl.MuxHandler("update", h, unmarshalUpdateUserPayload))
+	service.LogInfo("mount", "ctrl", "User", "action", "Update", "route", "PATCH /users/:userID")
 }
 
 // handleUserOrigin applies the CORS response headers corresponding to the origin.

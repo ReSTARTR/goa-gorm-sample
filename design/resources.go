@@ -52,7 +52,7 @@ var _ = Resource("user", func() {
 	})
 	Action("update", func() {
 		Description("Update user")
-		Routing(PUT("/:userID"))
+		Routing(PATCH("/:userID"))
 		Params(func() {
 			Param("userID", Integer, "User ID")
 		})
