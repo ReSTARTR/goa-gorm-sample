@@ -19,8 +19,10 @@ func main() {
 	service.Use(middleware.Recover())
 
 	// Mount "bottle" controller
-	c := NewBottleController(service)
-	app.MountBottleController(service, c)
+	bc := NewBottleController(service)
+	app.MountBottleController(service, bc)
+	sc := NewSwaggerController(service)
+	app.MountSwaggerController(service, sc)
 
 	// Start service
 	if err := service.ListenAndServe(":8000"); err != nil {
