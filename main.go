@@ -1,4 +1,4 @@
-//go:generate goagen bootstrap -d github.com/ReSTARTR/goa-sample/design
+//go:generate goagen bootstrap -d github.com/ReSTARTR/goa-gorm-sample/design
 
 package main
 
