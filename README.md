@@ -23,8 +23,9 @@ $ make swagger-ui
 Modify db configuration
 ----
 
-edit db/db.go
-
+```sh
+vim main.go
+```
 
 Start server
 ----

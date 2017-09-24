@@ -1,10 +1,14 @@
 package controller
 
 import (
-	"github.com/ReSTARTR/goa-gorm-sample/app"
-	"github.com/ReSTARTR/goa-gorm-sample/db"
-	"github.com/ReSTARTR/goa-gorm-sample/models"
+	"context"
+	"errors"
+
 	"github.com/goadesign/goa"
+	"github.com/jinzhu/gorm"
+
+	"github.com/ReSTARTR/goa-gorm-sample/app"
+	"github.com/ReSTARTR/goa-gorm-sample/models"
 )
 
 // UserController implements the user resource.
@@ -22,7 +26,10 @@ func (c *UserController) Create(ctx *app.CreateUserContext) error {
 	// UserController_Create: start_implement
 
 	// Put your logic here
-	udb := models.NewUserDB(db.DB)
+	udb, err := dbFromContext(ctx)
+	if err != nil {
+		return err
+	}
 	u := models.UserFromUserPayload(ctx.Payload)
 	if err := udb.Add(ctx, u); err != nil {
 		return err
@@ -38,7 +45,10 @@ func (c *UserController) Index(ctx *app.IndexUserContext) error {
 	// UserController_Index: start_implement
 
 	// Put your logic here
-	udb := models.NewUserDB(db.DB)
+	udb, err := dbFromContext(ctx)
+	if err != nil {
+		return err
+	}
 	users := udb.ListApplicationVndUser(ctx)
 
 	// UserController_Index: end_implement
@@ -52,9 +62,13 @@ func (c *UserController) Show(ctx *app.ShowUserContext) error {
 	// UserController_Show: start_implement
 
 	// Put your logic here
-	udb := models.NewUserDB(db.DB)
-	var user *app.ApplicationVndUser
+	var udb *models.UserDB
 	var err error
+	udb, err = dbFromContext(ctx)
+	if err != nil {
+		return err
+	}
+	var user *app.ApplicationVndUser
 	user, err = udb.OneApplicationVndUser(ctx, ctx.UserID)
 	if err != nil {
 		return err
@@ -71,7 +85,10 @@ func (c *UserController) Update(ctx *app.UpdateUserContext) error {
 	// UserController_Update: start_implement
 
 	// Put your logic here
-	udb := models.NewUserDB(db.DB)
+	udb, err := dbFromContext(ctx)
+	if err != nil {
+		return err
+	}
 	if err := udb.UpdateFromUserPayload(ctx, ctx.Payload, ctx.UserID); err != nil {
 		return nil
 	}
@@ -79,4 +96,12 @@ func (c *UserController) Update(ctx *app.UpdateUserContext) error {
 	// UserController_Update: end_implement
 	res := &app.ApplicationVndUser{}
 	return ctx.OK(res)
+}
+
+func dbFromContext(ctx context.Context) (*models.UserDB, error) {
+	db, ok := (ctx.Value("DB")).(*gorm.DB)
+	if !ok {
+		return nil, errors.New("DB is not exists in context")
+	}
+	return models.NewUserDB(db), nil
 }
